@@ -41,7 +41,7 @@ const GuestPlaceholderScreen: React.FC<GuestPlaceholderScreenProps> = ({
         marginBottom="$5"
       >
         <LottieView
-          source={require('../assets/animations/lock-animation.json')}
+          source={require('../../assets/animations/lock-animation.json')}
           autoPlay
           loop
           renderMode="AUTOMATIC"
