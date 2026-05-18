@@ -1,105 +1,124 @@
 import React from 'react';
-import { Image } from 'react-native';
-import { YStack, Text, Button, XStack } from 'tamagui';
+import { Dimensions } from 'react-native';
+import { YStack, Text, Button, useTheme } from 'tamagui';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../type';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import LottieView from 'lottie-react-native';
 
 interface GuestPlaceholderScreenProps {
   title?: string;
   description?: string;
-  iconName?: string;
 }
+
+const { width } = Dimensions.get('window');
+
+const animationSize = width * 0.7;
 
 const GuestPlaceholderScreen: React.FC<GuestPlaceholderScreenProps> = ({
   title = 'Join the Community',
   description = 'Sign up or sign in to access personalized features, interact with the community, and manage your profile.',
-  iconName = 'user-lock',
 }) => {
-  // removed isDarkMode variable
   const inset = useSafeAreaInsets();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const theme = useTheme();
 
   return (
     <YStack
       flex={1}
-      backgroundColor="$background"
+      backgroundColor={theme.background.val}
       paddingHorizontal="$5"
-      paddingTop={inset.top + 40}
+      paddingTop={inset.top + 20}
+      paddingBottom="$5"
       justifyContent="center"
       alignItems="center"
-      space="$5"
-      animation="bouncy"
-      enterStyle={{ opacity: 0, y: 15, scale: 0.95 }}
     >
-      <YStack 
-        alignItems="center" 
-        justifyContent="center" 
-        backgroundColor="$backgroundLight"
-        width={100} 
-        height={100} 
-        borderRadius={50}
-        marginBottom="$4"
-        animation="bouncy"
-        enterStyle={{ opacity: 0, scale: 0.5 }}
+      {/* Lottie Animation */}
+      <YStack
+        alignItems="center"
+        justifyContent="center"
+        marginBottom="$5"
       >
-        <FontAwesome5 name={iconName} size={40} color="$color" />
+        <LottieView
+          source={require('../assets/animations/lock-animation.json')}
+          autoPlay
+          loop
+          renderMode="AUTOMATIC"
+          resizeMode="contain"
+          style={{
+            width: animationSize,
+            height: animationSize,
+          }}
+        />
       </YStack>
 
+      {/* Title */}
       <Text
-        fontSize={24}
+        fontSize={28}
         fontWeight="800"
-        color="$color"
+        color={theme.color.val}
         textAlign="center"
+        marginBottom="$3"
       >
         {title}
       </Text>
 
+      {/* Description */}
       <Text
         fontSize={16}
-        color="$color10"
+        color={theme.color10.val}
         textAlign="center"
         lineHeight={24}
-        paddingHorizontal="$2"
-        marginBottom="$6"
+        paddingHorizontal="$3"
+        marginBottom="$8"
       >
         {description}
       </Text>
 
-      <YStack width="100%" space="$3" marginTop="$4">
+      {/* Buttons */}
+      <YStack width="100%" space="$4">
+        {/* Sign In Button */}
         <Button
           backgroundColor="$primary"
           size="$6"
-          fontWeight="700"
-          borderRadius="$4"
+          borderRadius="$5"
           pressStyle={{ scale: 0.97 }}
           animation="fast"
           onPress={() => {
             navigation.reset({
               index: 0,
-              routes: [{name: 'LoginScreen'}],
+              routes: [{ name: 'LoginScreen' }],
             });
           }}
         >
-          <Text fontSize={18} color="$white" fontWeight="600">
+          <Text
+            fontSize={18}
+            color="white"
+            fontWeight="700"
+          >
             Sign In
           </Text>
         </Button>
 
+        {/* Sign Up Button */}
         <Button
-          variant="outlined"
-          borderColor="$borderColor"
           size="$6"
-          borderRadius="$4"
+          borderRadius="$5"
+          borderWidth={1}
+          borderColor={theme.borderColor.val}
+          backgroundColor="transparent"
           pressStyle={{ scale: 0.97 }}
           animation="fast"
           onPress={() => {
-             navigation.navigate('SignUpScreenFirst');
+            navigation.navigate('SignUpScreenFirst');
           }}
         >
-          <Text fontSize={18} color="$color" fontWeight="600">
+          <Text
+            fontSize={18}
+            color={theme.color.val}
+            fontWeight="700"
+          >
             Sign Up
           </Text>
         </Button>
